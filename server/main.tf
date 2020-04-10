@@ -55,6 +55,10 @@ output "service_name" {
   value = kubernetes_service.server.spec[0].cluster_ip
 }
 
+output "service_port" {
+  value = kubernetes_service.server.spec[0].port[0].port
+}
+
 output "host" {
   value = "http://${kubernetes_service.server.spec[0].cluster_ip}:${kubernetes_service.server.spec[0].port[0].port}/graphql"
 }
