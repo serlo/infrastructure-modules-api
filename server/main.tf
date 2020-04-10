@@ -52,7 +52,7 @@ resource "kubernetes_service" "server" {
 }
 
 output "service_name" {
-  value = kubernetes_service.server.spec[0].cluster_ip
+  value = kubernetes_service.server.metadata[0].name
 }
 
 output "service_port" {
