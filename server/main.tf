@@ -110,16 +110,15 @@ resource "kubernetes_deployment" "server" {
           name              = local.name
           image_pull_policy = var.image_pull_policy
 
-          #          liveness_probe {
-          #            http_get {
-          #              path = "/"
-          #              port = 3000
-          #            }
-          #
-          #            initial_delay_seconds = 5
-          #            period_seconds        = 30
-          #          }
+          liveness_probe {
+            http_get {
+              path = "/"
+              port = 3000
+            }
 
+            initial_delay_seconds = 5
+            period_seconds        = 30
+          }
 
           env {
             name  = "SERLO_ORG_HOST"
