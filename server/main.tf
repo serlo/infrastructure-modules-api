@@ -99,9 +99,13 @@ resource "kubernetes_deployment" "server" {
       spec {
         host_aliases {
           ip = var.serlo_org_ip_address
-          # TODO: handle all instances
           hostnames = [
-            "de.serlo.localhost"
+            "de.serlo.localhost",
+            "en.serlo.localhost",
+            "es.serlo.localhost",
+            "fr.serlo.localhost",
+            "hi.serlo.localhost",
+            "ta.serlo.localhost"
           ]
         }
 
