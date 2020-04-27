@@ -26,6 +26,11 @@ variable "secrets" {
   })
 }
 
+variable "redis_host" {
+  description = "Redis host to use for Cache"
+  type        = string
+}
+
 variable "serlo_org_ip_address" {
   description = "IP address of serlo.org server"
   type        = string
@@ -142,6 +147,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "SERLO_CLOUDFLARE_WORKER_SECRET"
             value = var.secrets.serlo_cloudflare_worker
+          }
+
+          env {
+            name  = "REDIS_HOST"
+            value = var.redis_host
           }
 
           resources {
