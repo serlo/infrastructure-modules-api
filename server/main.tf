@@ -156,12 +156,12 @@ resource "kubernetes_deployment" "server" {
 
           resources {
             limits {
-              cpu    = "375m"
+              cpu    = "300m"
               memory = "150Mi"
             }
 
             requests {
-              cpu    = "250m"
+              cpu    = "200m"
               memory = "100Mi"
             }
           }
@@ -171,26 +171,26 @@ resource "kubernetes_deployment" "server" {
   }
 
   # Ignore changes to number of replicas since we have autoscaling enabled
-  #  lifecycle {
-  #    ignore_changes = [
-  #      spec.0.replicas
-  #    ]
-  #  }
+  lifecycle {
+    ignore_changes = [
+      spec.0.replicas
+    ]
+  }
 }
 
-#resource "kubernetes_horizontal_pod_autoscaler" "server" {
-#  metadata {
-#    name      = local.name
-#    namespace = var.namespace
-#  }
-#
-#  spec {
-#    max_replicas = 5
-#
-#    scale_target_ref {
-#      api_version = "apps/v1"
-#      kind        = "Deployment"
-#      name        = local.name
-#    }
-#  }
-#}
+resource "kubernetes_horizontal_pod_autoscaler" "server" {
+  metadata {
+    name      = local.name
+    namespace = var.namespace
+  }
+
+  spec {
+    max_replicas = 5
+
+    scale_target_ref {
+      api_version = "apps/v1"
+      kind        = "Deployment"
+      name        = local.name
+    }
+  }
+}
