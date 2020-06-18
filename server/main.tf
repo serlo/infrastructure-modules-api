@@ -90,7 +90,7 @@ resource "kubernetes_deployment" "server" {
 
       rolling_update {
         max_surge       = "1"
-        max_unavailable = "1"
+        max_unavailable = "0"
       }
     }
 
