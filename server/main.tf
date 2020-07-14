@@ -31,6 +31,11 @@ variable "redis_host" {
   type        = string
 }
 
+variable "hydra_host" {
+  description = "Hydra host"
+  type        = string
+}
+
 variable "serlo_org_ip_address" {
   description = "IP address of serlo.org server"
   type        = string
@@ -152,6 +157,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "REDIS_HOST"
             value = var.redis_host
+          }
+
+          env {
+            name  = "HYDRA_HOST"
+            value = var.hydra_host
           }
 
           resources {
