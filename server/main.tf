@@ -26,6 +26,14 @@ variable "secrets" {
   })
 }
 
+variable "active_donors_data" {
+  description = "Data for active donors endpoint"
+  type = object({
+    google_api_key        = string
+    google_spreadsheet_id = string
+  })
+}
+
 variable "redis_host" {
   description = "Redis host to use for Cache"
   type        = string
@@ -162,6 +170,16 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "HYDRA_HOST"
             value = var.hydra_host
+          }
+
+          env {
+            name  = "GOOGLE_API_KEY"
+            value = var.active_donors_data.google_api_key
+          }
+
+          env {
+            name  = "ACTIVE_DONORS_SPREADSHEET_ID"
+            value = var.active_donors_data.google_spreadsheet_id
           }
 
           resources {
