@@ -1,13 +1,3 @@
-resource "random_password" "playground" {
-  length  = 32
-  special = false
-}
-
-output "playground" {
-  description = "Shared secret between api.serlo.org and its playground"
-  value       = random_password.playground.result
-}
-
 resource "random_password" "serlo_cloudflare_worker" {
   length  = 32
   special = false

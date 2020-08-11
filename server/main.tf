@@ -20,7 +20,6 @@ variable "image_pull_policy" {
 variable "secrets" {
   description = "Shared secrets between api.serlo.org and respective consumers"
   type = object({
-    playground              = string
     serlo_cloudflare_worker = string
     serlo_org               = string
   })
@@ -46,6 +45,11 @@ variable "hydra_host" {
 
 variable "serlo_org_ip_address" {
   description = "IP address of serlo.org server"
+  type        = string
+}
+
+variable "sentry_dsn" {
+  description = "Sentry DSN"
   type        = string
 }
 
@@ -148,11 +152,6 @@ resource "kubernetes_deployment" "server" {
           }
 
           env {
-            name  = "PLAYGROUND_SECRET"
-            value = var.secrets.playground
-          }
-
-          env {
             name  = "SERLO_ORG_SECRET"
             value = var.secrets.serlo_org
           }
@@ -180,6 +179,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "ACTIVE_DONORS_SPREADSHEET_ID"
             value = var.active_donors_data.google_spreadsheet_id
+          }
+
+          env {
+            name  = "SENTRY_DSN"
+            value = var.sentry_dsn
           }
 
           resources {
