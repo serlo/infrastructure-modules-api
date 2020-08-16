@@ -53,6 +53,11 @@ variable "sentry_dsn" {
   type        = string
 }
 
+variable "sentry_environment" {
+  description = "Sentry environment"
+  type        = string
+}
+
 resource "kubernetes_service" "server" {
   metadata {
     name      = local.name
@@ -184,6 +189,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "SENTRY_DSN"
             value = var.sentry_dsn
+          }
+
+          env {
+            name  = "ENVIRONMENT"
+            value = var.sentry_environment
           }
 
           resources {
