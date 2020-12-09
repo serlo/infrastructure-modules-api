@@ -33,8 +33,8 @@ variable "active_donors_data" {
   })
 }
 
-variable "redis_host" {
-  description = "Redis host to use for Cache"
+variable "redis_url" {
+  description = "Redis url to use for Cache"
   type        = string
 }
 
@@ -167,8 +167,8 @@ resource "kubernetes_deployment" "server" {
           }
 
           env {
-            name  = "REDIS_HOST"
-            value = var.redis_host
+            name  = "REDIS_URL"
+            value = var.redis_url
           }
 
           env {
@@ -194,6 +194,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "ENVIRONMENT"
             value = var.sentry_environment
+          }
+
+          env {
+            name  = "LOG_LEVEL"
+            value = "INFO"
           }
 
           resources {
