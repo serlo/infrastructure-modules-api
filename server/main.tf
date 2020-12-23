@@ -58,6 +58,14 @@ variable "sentry_environment" {
   type        = string
 }
 
+variable "swr_queue_dashboard_secret" {
+  description = "Basic Auth credentials for SWR Queue dashboard"
+  type = object({
+    username = string
+    password = string
+  })
+}
+
 resource "kubernetes_service" "server" {
   metadata {
     name      = local.name
@@ -199,6 +207,16 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "LOG_LEVEL"
             value = "INFO"
+          }
+
+          env {
+            name  = "SWR_QUEUE_DASHBOARD_USERNAME"
+            value = var.swr_queue_dashboard_secret.username
+          }
+
+          env {
+            name  = "SWR_QUEUE_DASHBOARD_PASSWORD"
+            value = var.swr_queue_dashboard_secret.password
           }
 
           resources {
