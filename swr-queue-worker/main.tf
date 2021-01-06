@@ -1,5 +1,5 @@
 locals {
-  name = "server"
+  name = "swr-queue-worker"
 }
 
 variable "namespace" {
@@ -53,22 +53,14 @@ variable "google_spreadsheet_api" {
   })
 }
 
-variable "hydra_host" {
-  description = "Hydra host"
-  type        = string
-}
-
 variable "serlo_org_ip_address" {
   description = "IP address of serlo.org server"
   type        = string
 }
 
-variable "swr_queue_dashboard" {
-  description = "Basic auth credentials for SWR Queue dashboard"
-  type = object({
-    username = string
-    password = string
-  })
+variable "concurrency" {
+  description = "Number of parallel requests"
+  type        = number
 }
 
 resource "kubernetes_service" "server" {
@@ -150,19 +142,9 @@ resource "kubernetes_deployment" "server" {
         }
 
         container {
-          image             = "eu.gcr.io/serlo-shared/api-server:${var.image_tag}"
+          image             = "eu.gcr.io/serlo-shared/api-swr-queue-worker:${var.image_tag}"
           name              = local.name
           image_pull_policy = var.image_pull_policy
-
-          liveness_probe {
-            http_get {
-              path = "/.well-known/apollo/server-health"
-              port = 3000
-            }
-
-            initial_delay_seconds = 5
-            period_seconds        = 30
-          }
 
           env {
             name  = "ENVIRONMENT"
@@ -210,34 +192,19 @@ resource "kubernetes_deployment" "server" {
           }
 
           env {
-            name  = "SERVER_HYDRA_HOST"
-            value = var.hydra_host
-          }
-
-          env {
-            name  = "SERVER_SERLO_CLOUDFLARE_WORKER_SECRET"
-            value = var.secrets.serlo_cloudflare_worker
-          }
-
-          env {
-            name  = "SERVER_SWR_QUEUE_DASHBOARD_USERNAME"
-            value = var.swr_queue_dashboard.username
-          }
-
-          env {
-            name  = "SERVER_SWR_QUEUE_DASHBOARD_PASSWORD"
-            value = var.swr_queue_dashboard.password
+            name  = "SWR_QUEUE_WORKER_CONCURRENCY"
+            value = var.concurrency
           }
 
           resources {
             limits {
               cpu    = "300m"
-              memory = "750Mi"
+              memory = "200Mi"
             }
 
             requests {
               cpu    = "200m"
-              memory = "500Mi"
+              memory = "100Mi"
             }
           }
         }
