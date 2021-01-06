@@ -127,3 +127,11 @@ output "swr_queue_worker_service_port" {
 output "swr_queue_worker_host" {
   value = module.swr_queue_worker.host
 }
+
+output "secrets_serlo_cloudflare_worker" {
+  value = module.secrets.serlo_cloudflare_worker
+}
+
+output "secrets_serlo_org" {
+  value = module.secrets.serlo_org
+}
