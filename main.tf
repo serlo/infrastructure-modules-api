@@ -65,8 +65,29 @@ variable "swr_queue_worker" {
   })
 }
 
+variable "database_layer" {
+  description = "Configuration for Database Layer"
+  type = object({
+    image_tag = string
+
+    database_url             = string
+    database_max_connections = number
+  })
+}
+
 module "secrets" {
   source = "./secrets"
+}
+
+module "database_layer" {
+  source = "./database-layer"
+
+  namespace         = var.namespace
+  image_tag         = var.database_layer.image_tag
+  image_pull_policy = var.image_pull_policy
+
+  serlo_org_database_url   = var.database_layer.database_url
+  database_max_connections = var.database_layer.database_max_connections
 }
 
 module "server" {
@@ -76,15 +97,16 @@ module "server" {
   image_tag         = var.image_tag
   image_pull_policy = var.image_pull_policy
 
-  environment            = var.environment
-  log_level              = var.log_level
-  redis_url              = var.redis_url
-  secrets                = module.secrets
-  sentry_dsn             = var.sentry_dsn
-  google_spreadsheet_api = var.google_spreadsheet_api
-  hydra_host             = var.server.hydra_host
-  serlo_org_ip_address   = var.serlo_org_ip_address
-  swr_queue_dashboard    = var.server.swr_queue_dashboard
+  environment                   = var.environment
+  log_level                     = var.log_level
+  redis_url                     = var.redis_url
+  secrets                       = module.secrets
+  sentry_dsn                    = var.sentry_dsn
+  google_spreadsheet_api        = var.google_spreadsheet_api
+  hydra_host                    = var.server.hydra_host
+  serlo_org_database_layer_host = module.database_layer.host
+  serlo_org_ip_address          = var.serlo_org_ip_address
+  swr_queue_dashboard           = var.server.swr_queue_dashboard
 }
 
 module "swr_queue_worker" {
@@ -94,14 +116,15 @@ module "swr_queue_worker" {
   image_tag         = var.image_tag
   image_pull_policy = var.image_pull_policy
 
-  environment            = var.environment
-  log_level              = var.log_level
-  redis_url              = var.redis_url
-  secrets                = module.secrets
-  sentry_dsn             = var.sentry_dsn
-  google_spreadsheet_api = var.google_spreadsheet_api
-  serlo_org_ip_address   = var.serlo_org_ip_address
-  concurrency            = var.swr_queue_worker.concurrency
+  environment                   = var.environment
+  log_level                     = var.log_level
+  redis_url                     = var.redis_url
+  secrets                       = module.secrets
+  sentry_dsn                    = var.sentry_dsn
+  google_spreadsheet_api        = var.google_spreadsheet_api
+  serlo_org_database_layer_host = module.database_layer.host
+  serlo_org_ip_address          = var.serlo_org_ip_address
+  concurrency                   = var.swr_queue_worker.concurrency
 }
 
 output "server_service_name" {
