@@ -118,13 +118,10 @@ resource "kubernetes_deployment" "server" {
     }
 
     strategy {
-      type = "RollingUpdate"
-
-      rolling_update {
-        max_surge       = "1"
-        max_unavailable = "0"
-      }
+      type = "Recreate"
     }
+
+    replicas = 1
 
     template {
       metadata {
@@ -150,6 +147,16 @@ resource "kubernetes_deployment" "server" {
           image             = "eu.gcr.io/serlo-shared/api-swr-queue-worker:${var.image_tag}"
           name              = local.name
           image_pull_policy = var.image_pull_policy
+
+          liveness_probe {
+            http_get {
+              path = "/.well-known/health"
+              port = 3000
+            }
+
+            initial_delay_seconds = 5
+            period_seconds        = 30
+          }
 
           env {
             name  = "ENVIRONMENT"
@@ -219,30 +226,6 @@ resource "kubernetes_deployment" "server" {
           }
         }
       }
-    }
-  }
-
-  # Ignore changes to number of replicas since we have autoscaling enabled
-  lifecycle {
-    ignore_changes = [
-      spec.0.replicas
-    ]
-  }
-}
-
-resource "kubernetes_horizontal_pod_autoscaler" "server" {
-  metadata {
-    name      = local.name
-    namespace = var.namespace
-  }
-
-  spec {
-    max_replicas = 5
-
-    scale_target_ref {
-      api_version = "apps/v1"
-      kind        = "Deployment"
-      name        = local.name
     }
   }
 }

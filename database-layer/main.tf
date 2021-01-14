@@ -98,6 +98,16 @@ resource "kubernetes_deployment" "server" {
           name              = local.name
           image_pull_policy = var.image_pull_policy
 
+          liveness_probe {
+            http_get {
+              path = "/.well-known/health"
+              port = 8080
+            }
+
+            initial_delay_seconds = 5
+            period_seconds        = 30
+          }
+
           env {
             name  = "DATABASE_URL"
             value = var.serlo_org_database_url
@@ -110,13 +120,13 @@ resource "kubernetes_deployment" "server" {
 
           resources {
             limits {
-              cpu    = "300m"
-              memory = "750Mi"
+              cpu    = "200m"
+              memory = "100Mi"
             }
 
             requests {
-              cpu    = "200m"
-              memory = "500Mi"
+              cpu    = "100m"
+              memory = "50Mi"
             }
           }
         }
