@@ -86,6 +86,7 @@ module "database_layer" {
   image_tag         = var.database_layer.image_tag
   image_pull_policy = var.image_pull_policy
 
+  environment              = var.environment
   serlo_org_database_url   = var.database_layer.database_url
   database_max_connections = var.database_layer.database_max_connections
 }

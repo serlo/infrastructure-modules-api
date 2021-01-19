@@ -17,6 +17,11 @@ variable "image_pull_policy" {
   type        = string
 }
 
+variable "environment" {
+  description = "environment"
+  type        = string
+}
+
 variable "serlo_org_database_url" {
   description = "Serlo.org Database URL"
   type        = string
@@ -106,6 +111,11 @@ resource "kubernetes_deployment" "server" {
 
             initial_delay_seconds = 5
             period_seconds        = 30
+          }
+
+          env {
+            name  = "ENV"
+            value = var.environment
           }
 
           env {
