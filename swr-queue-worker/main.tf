@@ -58,11 +58,6 @@ variable "serlo_org_database_layer_host" {
   type        = string
 }
 
-variable "serlo_org_ip_address" {
-  description = "IP address of serlo.org server"
-  type        = string
-}
-
 variable "concurrency" {
   description = "Number of parallel requests"
   type        = number
@@ -131,18 +126,6 @@ resource "kubernetes_deployment" "server" {
       }
 
       spec {
-        host_aliases {
-          ip = var.serlo_org_ip_address
-          hostnames = [
-            "de.serlo.localhost",
-            "en.serlo.localhost",
-            "es.serlo.localhost",
-            "fr.serlo.localhost",
-            "hi.serlo.localhost",
-            "ta.serlo.localhost"
-          ]
-        }
-
         container {
           image             = "eu.gcr.io/serlo-shared/api-swr-queue-worker:${var.image_tag}"
           name              = local.name
@@ -199,11 +182,6 @@ resource "kubernetes_deployment" "server" {
           }
 
           env {
-            name  = "SERLO_ORG_HOST"
-            value = "serlo.localhost"
-          }
-
-          env {
             name  = "SERLO_ORG_SECRET"
             value = var.secrets.serlo_org
           }
@@ -211,6 +189,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "SWR_QUEUE_WORKER_CONCURRENCY"
             value = var.concurrency
+          }
+
+          env {
+            name  = "SWR_QUEUE_WORKER_DELAY"
+            value = "250"
           }
 
           resources {

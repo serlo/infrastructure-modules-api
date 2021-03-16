@@ -63,11 +63,6 @@ variable "serlo_org_database_layer_host" {
   type        = string
 }
 
-variable "serlo_org_ip_address" {
-  description = "IP address of serlo.org server"
-  type        = string
-}
-
 variable "swr_queue_dashboard" {
   description = "Basic auth credentials for SWR Queue dashboard"
   type = object({
@@ -142,18 +137,6 @@ resource "kubernetes_deployment" "server" {
       }
 
       spec {
-        host_aliases {
-          ip = var.serlo_org_ip_address
-          hostnames = [
-            "de.serlo.localhost",
-            "en.serlo.localhost",
-            "es.serlo.localhost",
-            "fr.serlo.localhost",
-            "hi.serlo.localhost",
-            "ta.serlo.localhost"
-          ]
-        }
-
         container {
           image             = "eu.gcr.io/serlo-shared/api-server:${var.image_tag}"
           name              = local.name
@@ -207,11 +190,6 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "SERLO_ORG_DATABASE_LAYER_HOST"
             value = var.serlo_org_database_layer_host
-          }
-
-          env {
-            name  = "SERLO_ORG_HOST"
-            value = "serlo.localhost"
           }
 
           env {

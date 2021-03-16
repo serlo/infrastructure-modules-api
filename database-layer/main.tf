@@ -2,6 +2,10 @@ locals {
   name = "serlo-org-database-layer"
 }
 
+variable "suffix" {
+  type = string
+}
+
 variable "namespace" {
   description = "Kubernetes namespace to use"
   type        = string
@@ -32,15 +36,20 @@ variable "database_max_connections" {
   type        = number
 }
 
+variable "sentry_dsn" {
+  description = "Sentry DSN"
+  type        = string
+}
+
 resource "kubernetes_service" "server" {
   metadata {
-    name      = local.name
+    name      = "${local.name}${var.suffix}"
     namespace = var.namespace
   }
 
   spec {
     selector = {
-      app = local.name
+      app = "${local.name}${var.suffix}"
     }
 
     port {
@@ -66,18 +75,18 @@ output "host" {
 
 resource "kubernetes_deployment" "server" {
   metadata {
-    name      = local.name
+    name      = "${local.name}${var.suffix}"
     namespace = var.namespace
 
     labels = {
-      app = local.name
+      app = "${local.name}${var.suffix}"
     }
   }
 
   spec {
     selector {
       match_labels = {
-        app = local.name
+        app = "${local.name}${var.suffix}"
       }
     }
 
@@ -93,14 +102,14 @@ resource "kubernetes_deployment" "server" {
     template {
       metadata {
         labels = {
-          app = local.name
+          app = "${local.name}${var.suffix}"
         }
       }
 
       spec {
         container {
           image             = "eu.gcr.io/serlo-shared/serlo-org-database-layer:${var.image_tag}"
-          name              = local.name
+          name              = "${local.name}${var.suffix}"
           image_pull_policy = var.image_pull_policy
 
           liveness_probe {
@@ -126,6 +135,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "DATABASE_MAX_CONNECTIONS"
             value = var.database_max_connections
+          }
+
+          env {
+            name  = "SENTRY_DSN"
+            value = var.sentry_dsn
           }
 
           resources {
@@ -154,7 +168,7 @@ resource "kubernetes_deployment" "server" {
 
 resource "kubernetes_horizontal_pod_autoscaler" "server" {
   metadata {
-    name      = local.name
+    name      = "${local.name}${var.suffix}"
     namespace = var.namespace
   }
 
@@ -164,7 +178,7 @@ resource "kubernetes_horizontal_pod_autoscaler" "server" {
     scale_target_ref {
       api_version = "apps/v1"
       kind        = "Deployment"
-      name        = local.name
+      name        = "${local.name}${var.suffix}"
     }
   }
 }
