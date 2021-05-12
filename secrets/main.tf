@@ -6,6 +6,7 @@ resource "random_password" "serlo_cloudflare_worker" {
 output "serlo_cloudflare_worker" {
   description = "Shared secret between api.serlo.org and serlo.org-cloudflare-worker"
   value       = random_password.serlo_cloudflare_worker.result
+  sensitive   = true
 }
 
 resource "random_password" "serlo_org" {
@@ -16,4 +17,5 @@ resource "random_password" "serlo_org" {
 output "serlo_org" {
   description = "Shared secret between api.serlo.org and serlo.org"
   value       = random_password.serlo_org.result
+  sensitive   = true
 }
