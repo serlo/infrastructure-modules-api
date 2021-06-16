@@ -67,6 +67,14 @@ variable "database_layer" {
   })
 }
 
+variable "cache_worker" {
+  description = "Configuration for Cache Worker"
+  type = object({
+    image_tag = string
+    enable_cronjob = bool
+  })
+}
+
 module "secrets" {
   source = "./secrets"
 }
@@ -132,6 +140,17 @@ module "swr_queue_worker" {
   google_spreadsheet_api        = var.google_spreadsheet_api
   serlo_org_database_layer_host = module.database_layer_swr.host
   concurrency                   = var.swr_queue_worker.concurrency
+}
+
+module "cache_worker" {
+  source = "./cache-worker"
+
+  namespace = var.namespace
+  image_tag = var.cache_worker.image_tag
+
+  api_host = module.server.host
+  secret = module.secrets.serlo_cache_worker
+  enable_cronjob = var.cache_worker.enable_cronjob
 }
 
 output "server_service_name" {
