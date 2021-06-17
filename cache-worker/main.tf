@@ -14,7 +14,7 @@ variable "image_tag" {
 
 variable "secret" {
   description = "Shared secret between api.serlo.org and serlo.org-cache-worker"
-  type = string
+  type        = string
 }
 
 variable "api_host" {
@@ -56,7 +56,7 @@ resource "kubernetes_cron_job" "cache_worker" {
 
               env {
                 name  = "API_HOST"
-                value =  var.api_host
+                value = var.api_host
               }
               env {
                 name  = "SECRET"

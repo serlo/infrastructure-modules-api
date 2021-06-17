@@ -70,7 +70,7 @@ variable "database_layer" {
 variable "cache_worker" {
   description = "Configuration for Cache Worker"
   type = object({
-    image_tag = string
+    image_tag      = string
     enable_cronjob = bool
   })
 }
@@ -148,8 +148,8 @@ module "cache_worker" {
   namespace = var.namespace
   image_tag = var.cache_worker.image_tag
 
-  api_host = module.server.host
-  secret = module.secrets.serlo_cache_worker
+  api_host       = module.server.host
+  secret         = module.secrets.serlo_cache_worker
   enable_cronjob = var.cache_worker.enable_cronjob
 }
 
