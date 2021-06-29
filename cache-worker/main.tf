@@ -45,7 +45,6 @@ resource "kubernetes_cron_job" "cache_worker" {
     job_template {
       metadata {}
       spec {
-        # TODO: ask
         backoff_limit = 2
         template {
           metadata {}
@@ -66,6 +65,28 @@ resource "kubernetes_cron_job" "cache_worker" {
                 name  = "SERVICE"
                 value = "serlo.org-cache-worker"
               }
+              # This ensures that changes to the config file trigger the cronjob
+              env {
+                name  = "CONFIG_CHECKSUM"
+                value = sha256(data.template_file.cache-keys.rendered)
+              }
+              volume_mount {
+                name       = local.name
+                mount_path = "/usr/src/app/dist/"
+                sub_path   = "cache-keys.json"
+              }
+            }
+            volume {
+              name = local.name
+
+              config_map {
+                name = kubernetes_config_map.cache-keys.metadata.0.name
+
+                items {
+                  key  = "cache-keys.json"
+                  path = "cache-keys.json"
+                }
+              }
             }
             restart_policy = "Never"
           }
@@ -73,4 +94,19 @@ resource "kubernetes_cron_job" "cache_worker" {
       }
     }
   }
+}
+
+resource "kubernetes_config_map" "cache-keys" {
+  metadata {
+    name      = "cache-keys.json"
+    namespace = var.namespace
+  }
+
+  data = {
+    "cache-keys.json" = data.template_file.cache-keys.rendered
+  }
+}
+
+data "template_file" "cache-keys" {
+  template = file("${path.module}/cache-keys.json")
 }
