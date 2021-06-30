@@ -19,3 +19,14 @@ output "serlo_org" {
   value       = random_password.serlo_org.result
   sensitive   = true
 }
+
+resource "random_password" "serlo_cache_worker" {
+  length  = 32
+  special = false
+}
+
+output "serlo_cache_worker" {
+  description = "Shared secret between api.serlo.org and serlo.org-cache-worker"
+  value       = random_password.serlo_cache_worker.result
+  sensitive   = true
+}
