@@ -27,6 +27,15 @@ variable "google_spreadsheet_api" {
   })
 }
 
+variable "rocket_chat_api" {
+  description = "Configuration for API of Rocket.Chat"
+  type = object({
+    user_id    = string
+    auth_token = string
+    url        = string
+  })
+}
+
 variable "log_level" {
   description = "log level"
   type        = string
@@ -121,6 +130,7 @@ module "server" {
   secrets                       = module.secrets
   sentry_dsn                    = var.server.sentry_dsn
   google_spreadsheet_api        = var.google_spreadsheet_api
+  rocket_chat_api               = var.rocket_chat_api
   hydra_host                    = var.server.hydra_host
   serlo_org_database_layer_host = module.database_layer.host
   swr_queue_dashboard           = var.server.swr_queue_dashboard
@@ -139,6 +149,7 @@ module "swr_queue_worker" {
   secrets                       = module.secrets
   sentry_dsn                    = var.server.sentry_dsn
   google_spreadsheet_api        = var.google_spreadsheet_api
+  rocket_chat_api               = var.rocket_chat_api
   serlo_org_database_layer_host = module.database_layer_swr.host
   concurrency                   = var.swr_queue_worker.concurrency
 }

@@ -54,6 +54,15 @@ variable "google_spreadsheet_api" {
   })
 }
 
+variable "rocket_chat_api" {
+  description = "Configuration for API of Rocket.Chat"
+  type = object({
+    user_id    = string
+    auth_token = string
+    url        = string
+  })
+}
+
 variable "serlo_org_database_layer_host" {
   description = "Host of database layer"
   type        = string
@@ -160,6 +169,21 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "GOOGLE_SPREADSHEET_API_SECRET"
             value = var.google_spreadsheet_api.secret
+          }
+
+          env {
+            name  = "ROCKET_CHAT_API_USER_ID"
+            value = var.rocket_chat_api.user_id
+          }
+
+          env {
+            name  = "ROCKET_CHAT_API_AUTH_TOKEN"
+            value = var.rocket_chat_api.auth_token
+          }
+
+          env {
+            name  = "ROCKET_CHAT_API_URL"
+            value = var.rocket_chat_api.url
           }
 
           env {
