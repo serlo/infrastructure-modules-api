@@ -50,6 +50,7 @@ variable "google_spreadsheet_api" {
   description = "Configuration for Google Spreadsheet API"
   type = object({
     active_donors = string
+    motivation    = string
     secret        = string
   })
 }
@@ -161,6 +162,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "GOOGLE_SPREADSHEET_API_ACTIVE_DONORS"
             value = var.google_spreadsheet_api.active_donors
+          }
+
+          env {
+            name  = "GOOGLE_SPREADSHEET_API_MOTIVATION"
+            value = var.google_spreadsheet_api.motivation
           }
 
           env {

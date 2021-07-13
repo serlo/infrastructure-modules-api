@@ -22,6 +22,7 @@ variable "google_spreadsheet_api" {
   description = "Configuration for Google Spreadsheet API"
   type = object({
     active_donors = string
+    motivation    = string
     secret        = string
   })
 }
