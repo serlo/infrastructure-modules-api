@@ -194,7 +194,7 @@ resource "kubernetes_deployment" "server" {
           }
 
           env {
-            name  = "ROCKET_CHAT_API_URL"
+            name  = "ROCKET_CHAT_URL"
             value = var.rocket_chat_api.url
           }
 
