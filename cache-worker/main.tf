@@ -1,5 +1,5 @@
 locals {
-  name = "cache_worker"
+  name = "cache-worker"
 }
 
 variable "namespace" {
@@ -31,7 +31,7 @@ resource "kubernetes_cron_job" "cache_worker" {
   count = var.enable_cronjob ? 1 : 0
 
   metadata {
-    name      = "cache_worker"
+    name      = "cache-worker"
     namespace = var.namespace
 
     labels = {
@@ -50,7 +50,7 @@ resource "kubernetes_cron_job" "cache_worker" {
           metadata {}
           spec {
             container {
-              name  = "cache_worker"
+              name  = "cache-worker"
               image = "eu.gcr.io/serlo-shared/api-cache-worker:${var.image_tag}"
 
               env {
@@ -73,7 +73,6 @@ resource "kubernetes_cron_job" "cache_worker" {
               volume_mount {
                 name       = local.name
                 mount_path = "/usr/src/app/dist/"
-                sub_path   = "cache-keys.json"
               }
             }
             volume {
