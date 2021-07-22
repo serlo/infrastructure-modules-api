@@ -72,7 +72,8 @@ resource "kubernetes_cron_job" "cache_worker" {
               }
               volume_mount {
                 name       = local.name
-                mount_path = "/usr/src/app/dist/"
+                mount_path = "/usr/src/app/dist/config/cache-keys.json"
+                sub_path   = "cache-keys.json"
               }
             }
             volume {
