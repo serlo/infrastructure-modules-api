@@ -64,6 +64,13 @@ variable "rocket_chat_api" {
   })
 }
 
+variable "mailchimp_api" {
+  description = "Configuration for API of Rocket.Chat"
+  type = object({
+    key = string
+  })
+}
+
 variable "hydra_host" {
   description = "Hydra host"
   type        = string
@@ -196,6 +203,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "ROCKET_CHAT_URL"
             value = var.rocket_chat_api.url
+          }
+
+          env {
+            name  = "MAILCHIMP_API_KEY"
+            value = var.mailchimp_api.key
           }
 
           env {

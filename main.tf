@@ -36,6 +36,13 @@ variable "rocket_chat_api" {
   })
 }
 
+variable "mailchimp_api" {
+  description = "Configuration for API of Mailchimp"
+  type = object({
+    key = string
+  })
+}
+
 variable "log_level" {
   description = "log level"
   type        = string
@@ -131,6 +138,7 @@ module "server" {
   sentry_dsn                    = var.server.sentry_dsn
   google_spreadsheet_api        = var.google_spreadsheet_api
   rocket_chat_api               = var.rocket_chat_api
+  mailchimp_api                 = var.mailchimp_api
   hydra_host                    = var.server.hydra_host
   serlo_org_database_layer_host = module.database_layer.host
   swr_queue_dashboard           = var.server.swr_queue_dashboard
@@ -150,6 +158,7 @@ module "swr_queue_worker" {
   sentry_dsn                    = var.server.sentry_dsn
   google_spreadsheet_api        = var.google_spreadsheet_api
   rocket_chat_api               = var.rocket_chat_api
+  mailchimp_api                 = var.mailchimp_api
   serlo_org_database_layer_host = module.database_layer_swr.host
   concurrency                   = var.swr_queue_worker.concurrency
 }
