@@ -111,7 +111,7 @@ resource "kubernetes_service" "server" {
 
     port {
       port        = 3000
-      target_port = 3000
+      target_port = 3001
     }
 
     type = "ClusterIP"
@@ -172,7 +172,7 @@ resource "kubernetes_deployment" "server" {
           liveness_probe {
             http_get {
               path = "/.well-known/apollo/server-health"
-              port = 3000
+              port = 3001
             }
 
             initial_delay_seconds = 5
