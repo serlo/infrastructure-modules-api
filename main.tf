@@ -13,6 +13,11 @@ variable "image_pull_policy" {
   type        = string
 }
 
+variable "node_pool" {
+  type        = string
+  description = "Node pool to use"
+}
+
 variable "environment" {
   description = "environment"
   type        = string
@@ -108,6 +113,7 @@ module "database_layer" {
   namespace         = var.namespace
   image_tag         = var.database_layer.image_tag
   image_pull_policy = var.image_pull_policy
+  node_pool         = var.node_pool
 
   environment              = var.environment
   sentry_dsn               = var.database_layer.sentry_dsn
@@ -122,6 +128,7 @@ module "database_layer_swr" {
   namespace         = var.namespace
   image_tag         = var.database_layer.image_tag
   image_pull_policy = var.image_pull_policy
+  node_pool         = var.node_pool
 
   environment              = var.environment
   sentry_dsn               = var.database_layer.sentry_dsn
@@ -135,6 +142,7 @@ module "server" {
   namespace         = var.namespace
   image_tag         = var.image_tag
   image_pull_policy = var.image_pull_policy
+  node_pool         = var.node_pool
 
   environment                   = var.environment
   log_level                     = var.log_level
@@ -156,6 +164,7 @@ module "swr_queue_worker" {
   namespace         = var.namespace
   image_tag         = var.image_tag
   image_pull_policy = var.image_pull_policy
+  node_pool         = var.node_pool
 
   environment                   = var.environment
   log_level                     = var.log_level
@@ -174,6 +183,7 @@ module "cache_worker" {
 
   namespace = var.namespace
   image_tag = var.cache_worker.image_tag
+  node_pool = var.node_pool
 
   api_host       = module.server.host
   secret         = module.secrets.serlo_cache_worker

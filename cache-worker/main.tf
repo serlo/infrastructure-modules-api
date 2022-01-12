@@ -12,6 +12,11 @@ variable "image_tag" {
   type        = string
 }
 
+variable "node_pool" {
+  type        = string
+  description = "Node pool to use"
+}
+
 variable "secret" {
   description = "Shared secret between api.serlo.org and serlo.org-cache-worker"
   type        = string
@@ -49,6 +54,10 @@ resource "kubernetes_cron_job" "cache_worker" {
         template {
           metadata {}
           spec {
+            node_selector = {
+              "cloud.google.com/gke-nodepool" = var.node_pool
+            }
+
             container {
               name  = "cache-worker"
               image = "eu.gcr.io/serlo-shared/api-cache-worker:${var.image_tag}"

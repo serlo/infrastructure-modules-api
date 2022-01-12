@@ -17,6 +17,11 @@ variable "image_pull_policy" {
   type        = string
 }
 
+variable "node_pool" {
+  type        = string
+  description = "Node pool to use"
+}
+
 variable "environment" {
   description = "environment"
   type        = string
@@ -164,6 +169,10 @@ resource "kubernetes_deployment" "server" {
       }
 
       spec {
+        node_selector = {
+          "cloud.google.com/gke-nodepool" = var.node_pool
+        }
+
         container {
           image             = "eu.gcr.io/serlo-shared/api-server:${var.image_tag}"
           name              = local.name
