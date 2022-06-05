@@ -77,7 +77,7 @@ resource "kubernetes_cron_job" "cache_worker" {
               # This ensures that changes to the config file trigger the cronjob
               env {
                 name  = "CONFIG_CHECKSUM"
-                value = sha256(data.template_file.cache-keys.rendered)
+                value = sha256(file("${path.module}/cache-keys.json"))
               }
               volume_mount {
                 name       = local.name
@@ -112,10 +112,6 @@ resource "kubernetes_config_map" "cache-keys" {
   }
 
   data = {
-    "cache-keys.json" = data.template_file.cache-keys.rendered
+    "cache-keys.json" = file("${path.module}/cache-keys.json")
   }
-}
-
-data "template_file" "cache-keys" {
-  template = file("${path.module}/cache-keys.json")
 }
