@@ -247,6 +247,11 @@ resource "kubernetes_deployment" "server" {
             value = "250"
           }
 
+          env {
+            name  = "CHECK_STALLED_JOBS_DELAY"
+            value = "600000"
+          }
+
           resources {
             limits = {
               cpu    = "200m"
