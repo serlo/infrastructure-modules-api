@@ -81,6 +81,11 @@ variable "hydra_host" {
   type        = string
 }
 
+variable "kratos_host" {
+  description = "Kratos host"
+  type        = string
+}
+
 variable "serlo_org_database_layer_host" {
   description = "Host of database layer"
   type        = string
@@ -261,6 +266,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "SERVER_HYDRA_HOST"
             value = var.hydra_host
+          }
+
+          env {
+            name  = "SERVER_KRATOS_HOST"
+            value = var.kratos_host
           }
 
           env {

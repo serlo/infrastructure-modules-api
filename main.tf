@@ -62,7 +62,8 @@ variable "redis_url" {
 variable "server" {
   description = "Configuration for server"
   type = object({
-    hydra_host = string
+    hydra_host  = string
+    kratos_host = string
     swr_queue_dashboard = object({
       username = string
       password = string
@@ -153,6 +154,7 @@ module "server" {
   rocket_chat_api               = var.rocket_chat_api
   mailchimp_api                 = var.mailchimp_api
   hydra_host                    = var.server.hydra_host
+  kratos_host                   = var.server.kratos_host
   serlo_org_database_layer_host = module.database_layer.host
   swr_queue_dashboard           = var.server.swr_queue_dashboard
   enmeshed                      = var.server.enmeshed
