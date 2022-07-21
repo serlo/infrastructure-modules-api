@@ -382,7 +382,7 @@ resource "kubernetes_horizontal_pod_autoscaler" "server" {
 
 resource "kubernetes_secret" "google_service_account" {
   metadata {
-    name = local.name
+    name      = local.name
     namespace = var.namespace
   }
 
