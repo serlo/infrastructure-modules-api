@@ -62,8 +62,9 @@ variable "redis_url" {
 variable "server" {
   description = "Configuration for server"
   type = object({
-    hydra_host  = string
-    kratos_host = string
+    hydra_host             = string
+    kratos_host            = string
+    google_service_account = string
     swr_queue_dashboard = object({
       username = string
       password = string
@@ -150,6 +151,7 @@ module "server" {
   redis_url                     = var.redis_url
   secrets                       = module.secrets
   sentry_dsn                    = var.server.sentry_dsn
+  google_service_account        = var.server.google_service_account
   google_spreadsheet_api        = var.google_spreadsheet_api
   rocket_chat_api               = var.rocket_chat_api
   mailchimp_api                 = var.mailchimp_api
