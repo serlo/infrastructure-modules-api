@@ -37,6 +37,12 @@ variable "redis_url" {
   type        = string
 }
 
+variable "google_service_account" {
+  description = "Google service account key"
+  type        = string
+  sensitive   = true
+}
+
 variable "secrets" {
   description = "Shared secrets between api.serlo.org and respective consumers"
   type = object({
@@ -308,6 +314,18 @@ resource "kubernetes_deployment" "server" {
             value = var.enmeshed.webhook_secret
           }
 
+          env {
+            name  = "GOOGLE_APPLICATION_CREDENTIALS"
+            value = "/etc/google_service_account/key.json"
+          }
+
+          volume_mount {
+            mount_path = "/etc/google_service_account/key.json"
+            sub_path   = "key.json"
+            name       = "google-service-account-volume"
+            read_only  = true
+          }
+
           resources {
             limits = {
               cpu    = "600m"
@@ -317,6 +335,19 @@ resource "kubernetes_deployment" "server" {
             requests = {
               cpu    = "400m"
               memory = "500Mi"
+            }
+          }
+        }
+
+        volume {
+          name = "google-service-account-volume"
+          secret {
+            secret_name = kubernetes_secret.google_service_account.metadata.0.name
+
+            items {
+              key  = "key.json"
+              path = "key.json"
+              mode = "0444"
             }
           }
         }
@@ -346,5 +377,16 @@ resource "kubernetes_horizontal_pod_autoscaler" "server" {
       kind        = "Deployment"
       name        = local.name
     }
+  }
+}
+
+resource "kubernetes_secret" "google_service_account" {
+  metadata {
+    name      = local.name
+    namespace = var.namespace
+  }
+
+  data = {
+    "key.json" = var.google_service_account
   }
 }
