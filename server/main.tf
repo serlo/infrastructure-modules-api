@@ -92,6 +92,11 @@ variable "kratos_host" {
   type        = string
 }
 
+variable "kratos_secret" {
+  description = "Shared secret between api and kratos"
+  type        = string
+}
+
 variable "serlo_org_database_layer_host" {
   description = "Host of database layer"
   type        = string
@@ -277,6 +282,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "SERVER_KRATOS_HOST"
             value = var.kratos_host
+          }
+
+          env {
+            name  = "SERVER_KRATOS_SECRET"
+            value = var.kratos_secret
           }
 
           env {
