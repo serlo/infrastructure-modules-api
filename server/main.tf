@@ -87,8 +87,13 @@ variable "hydra_host" {
   type        = string
 }
 
-variable "kratos_host" {
-  description = "Kratos host"
+variable "kratos_public_host" {
+  description = "Url of the kratos public host"
+  type        = string
+}
+
+variable "kratos_admin_host" {
+  description = "Url of the kratos admin host"
   type        = string
 }
 
@@ -280,8 +285,13 @@ resource "kubernetes_deployment" "server" {
           }
 
           env {
-            name  = "SERVER_KRATOS_HOST"
-            value = var.kratos_host
+            name  = "SERVER_KRATOS_PUBLIC_HOST"
+            value = var.kratos_public_host
+          }
+
+          env {
+            name  = "SERVER_KRATOS_ADMIN_HOST"
+            value = var.kratos_admin_host
           }
 
           env {

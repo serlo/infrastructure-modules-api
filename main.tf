@@ -63,9 +63,10 @@ variable "server" {
   description = "Configuration for server"
   type = object({
     hydra_host             = string
-    kratos_host            = string
-    google_service_account = string
+    kratos_public_host     = string
+    kratos_admin_host      = string
     kratos_secret          = string
+    google_service_account = string
     swr_queue_dashboard = object({
       username = string
       password = string
@@ -157,7 +158,8 @@ module "server" {
   rocket_chat_api               = var.rocket_chat_api
   mailchimp_api                 = var.mailchimp_api
   hydra_host                    = var.server.hydra_host
-  kratos_host                   = var.server.kratos_host
+  kratos_public_host            = var.server.kratos_public_host
+  kratos_admin_host             = var.server.kratos_admin_host
   kratos_secret                 = var.server.kratos_secret
   serlo_org_database_layer_host = module.database_layer.host
   swr_queue_dashboard           = var.server.swr_queue_dashboard
