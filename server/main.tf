@@ -115,15 +115,6 @@ variable "swr_queue_dashboard" {
   })
 }
 
-variable "enmeshed" {
-  description = "Enmeshed configuration"
-  type = object({
-    host           = string
-    server_secret  = string
-    webhook_secret = string
-  })
-}
-
 resource "kubernetes_service" "server" {
   metadata {
     name      = local.name
@@ -317,21 +308,6 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "SERVER_SERLO_CACHE_WORKER_SECRET"
             value = var.secrets.serlo_cache_worker
-          }
-
-          env {
-            name  = "ENMESHED_SERVER_HOST"
-            value = var.enmeshed.host
-          }
-
-          env {
-            name  = "ENMESHED_SERVER_SECRET"
-            value = var.enmeshed.server_secret
-          }
-
-          env {
-            name  = "ENMESHED_WEBHOOK_SECRET"
-            value = var.enmeshed.webhook_secret
           }
 
           env {

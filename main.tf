@@ -72,11 +72,6 @@ variable "server" {
       password = string
     })
     sentry_dsn = string
-    enmeshed = object({
-      host           = string
-      server_secret  = string
-      webhook_secret = string
-    })
   })
 }
 
@@ -163,7 +158,6 @@ module "server" {
   kratos_secret                 = var.server.kratos_secret
   serlo_org_database_layer_host = module.database_layer.host
   swr_queue_dashboard           = var.server.swr_queue_dashboard
-  enmeshed                      = var.server.enmeshed
 }
 
 module "swr_queue_worker" {
