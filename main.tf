@@ -66,6 +66,7 @@ variable "server" {
     kratos_public_host     = string
     kratos_admin_host      = string
     kratos_secret          = string
+    kratos_db_uri          = string
     google_service_account = string
     swr_queue_dashboard = object({
       username = string
@@ -156,6 +157,7 @@ module "server" {
   kratos_public_host            = var.server.kratos_public_host
   kratos_admin_host             = var.server.kratos_admin_host
   kratos_secret                 = var.server.kratos_secret
+  kratos_db_uri                 = var.server.kratos_db_uri
   serlo_org_database_layer_host = module.database_layer.host
   swr_queue_dashboard           = var.server.swr_queue_dashboard
 }

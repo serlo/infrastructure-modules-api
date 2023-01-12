@@ -102,6 +102,10 @@ variable "kratos_secret" {
   type        = string
 }
 
+variable "kratos_db_uri" {
+  type        = string
+}
+
 variable "serlo_org_database_layer_host" {
   description = "Host of database layer"
   type        = string
@@ -289,7 +293,10 @@ resource "kubernetes_deployment" "server" {
             name  = "SERVER_KRATOS_SECRET"
             value = var.kratos_secret
           }
-
+          env {
+            name  = "SERVER_KRATOS_DB_URI"
+            value = var.kratos_db_uri
+          }
           env {
             name  = "SERVER_SERLO_CLOUDFLARE_WORKER_SECRET"
             value = var.secrets.serlo_cloudflare_worker
