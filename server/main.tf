@@ -103,7 +103,7 @@ variable "kratos_secret" {
 }
 
 variable "kratos_db_uri" {
-  type        = string
+  type = string
 }
 
 variable "serlo_org_database_layer_host" {
