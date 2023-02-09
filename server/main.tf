@@ -327,7 +327,7 @@ resource "kubernetes_deployment" "server" {
           }
 
           env {
-            name = "SERVER_SERLO_NOTIFICATION_EMAIL_SERVICE_SECRET"
+            name  = "SERVER_SERLO_NOTIFICATION_EMAIL_SERVICE_SECRET"
             value = var.notification_email_secret
           }
 
