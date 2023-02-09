@@ -62,12 +62,13 @@ variable "redis_url" {
 variable "server" {
   description = "Configuration for server"
   type = object({
-    hydra_host             = string
-    kratos_public_host     = string
-    kratos_admin_host      = string
-    kratos_secret          = string
-    kratos_db_uri          = string
-    google_service_account = string
+    hydra_host                = string
+    kratos_public_host        = string
+    kratos_admin_host         = string
+    kratos_secret             = string
+    kratos_db_uri             = string
+    google_service_account    = string
+    notification_email_secret = string
     swr_queue_dashboard = object({
       username = string
       password = string
@@ -160,6 +161,7 @@ module "server" {
   kratos_db_uri                 = var.server.kratos_db_uri
   serlo_org_database_layer_host = module.database_layer.host
   swr_queue_dashboard           = var.server.swr_queue_dashboard
+  notification_email_secret     = var.server.notification_email_secret
 }
 
 module "swr_queue_worker" {

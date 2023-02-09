@@ -119,6 +119,10 @@ variable "swr_queue_dashboard" {
   })
 }
 
+variable "notification_email_secret" {
+  type = string
+}
+
 resource "kubernetes_service" "server" {
   metadata {
     name      = local.name
@@ -320,6 +324,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "GOOGLE_APPLICATION_CREDENTIALS"
             value = "/etc/google_service_account/key.json"
+          }
+
+          env {
+            name = "SERVER_SERLO_NOTIFICATION_EMAIL_SERVICE_SECRET"
+            value = var.notification_email_secret
           }
 
           volume_mount {
