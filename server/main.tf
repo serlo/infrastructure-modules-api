@@ -76,30 +76,26 @@ variable "rocket_chat_api" {
 }
 
 variable "mailchimp_api" {
-  description = "Configuration for API of Rocket.Chat"
+  description = "Configuration for API of Mailchimp"
   type = object({
     key = string
   })
 }
 
 variable "hydra_host" {
-  description = "Hydra host"
-  type        = string
+  type = string
 }
 
 variable "kratos_public_host" {
-  description = "Url of the kratos public host"
-  type        = string
+  type = string
 }
 
 variable "kratos_admin_host" {
-  description = "Url of the kratos admin host"
-  type        = string
+  type = string
 }
 
 variable "kratos_secret" {
-  description = "Shared secret between api and kratos"
-  type        = string
+  type = string
 }
 
 variable "kratos_db_uri" {
@@ -107,8 +103,7 @@ variable "kratos_db_uri" {
 }
 
 variable "serlo_org_database_layer_host" {
-  description = "Host of database layer"
-  type        = string
+  type = string
 }
 
 variable "swr_queue_dashboard" {
