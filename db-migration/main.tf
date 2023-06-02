@@ -29,13 +29,13 @@ variable "environment" {
 
 resource "kubernetes_service" "migration" {
   metadata {
-    name      = "${local.name}${var.suffix}"
+    name      = local.name
     namespace = var.namespace
   }
 
   spec {
     selector = {
-      app = "${local.name}${var.suffix}"
+      app = local.name
     }
 
     type = "ClusterIP"
@@ -160,16 +160,5 @@ resource "kubernetes_horizontal_pod_autoscaler" "migration" {
       kind        = "Deployment"
       name        = local.name
     }
-  }
-}
-
-resource "kubernetes_secret" "google_service_account" {
-  metadata {
-    name      = local.name
-    namespace = var.namespace
-  }
-
-  data = {
-    "key.json" = var.google_service_account
   }
 }
