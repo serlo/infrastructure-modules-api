@@ -196,6 +196,17 @@ module "cache_worker" {
   enable_cronjob = var.cache_worker.enable_cronjob
 }
 
+module "db-migration" {
+  source = "./db-migration"
+
+  namespace         = var.namespace
+  image_tag         = var.image_tag
+  image_pull_policy = var.image_pull_policy
+  node_pool         = var.node_pool
+
+  environment = var.environment
+}
+
 output "server_service_name" {
   value = module.server.service_name
 }
