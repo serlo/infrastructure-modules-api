@@ -196,7 +196,7 @@ module "cache_worker" {
   enable_cronjob = var.cache_worker.enable_cronjob
 }
 
-module "db-migration" {
+module "db_migration" {
   source = "./db-migration"
 
   namespace         = var.namespace
