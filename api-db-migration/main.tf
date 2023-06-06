@@ -46,7 +46,7 @@ output "service_name" {
   value = kubernetes_service.migration.metadata[0].name
 }
 
-resource "kubernetes_deployment" "migration" {
+resource "kubernetes_job" "migration" {
   metadata {
     name      = local.name
     namespace = var.namespace
@@ -60,15 +60,6 @@ resource "kubernetes_deployment" "migration" {
     selector {
       match_labels = {
         app = local.name
-      }
-    }
-
-    strategy {
-      type = "RollingUpdate"
-
-      rolling_update {
-        max_surge       = "1"
-        max_unavailable = "0"
       }
     }
 
@@ -107,30 +98,6 @@ resource "kubernetes_deployment" "migration" {
           }
         }
       }
-    }
-  }
-
-  # Ignore changes to number of replicas since we have autoscaling enabled
-  lifecycle {
-    ignore_changes = [
-      spec.0.replicas
-    ]
-  }
-}
-
-resource "kubernetes_horizontal_pod_autoscaler" "migration" {
-  metadata {
-    name      = local.name
-    namespace = var.namespace
-  }
-
-  spec {
-    max_replicas = 5
-
-    scale_target_ref {
-      api_version = "apps/v1"
-      kind        = "Deployment"
-      name        = local.name
     }
   }
 }
