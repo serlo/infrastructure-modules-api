@@ -46,14 +46,6 @@ output "service_name" {
   value = kubernetes_service.migration.metadata[0].name
 }
 
-output "service_port" {
-  value = kubernetes_service.migration.spec[0].port[0].port
-}
-
-output "host" {
-  value = "http://${kubernetes_service.migration.spec[0].cluster_ip}:${kubernetes_service.migration.spec[0].port[0].port}/graphql"
-}
-
 resource "kubernetes_deployment" "migration" {
   metadata {
     name      = local.name
