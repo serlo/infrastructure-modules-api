@@ -103,6 +103,14 @@ variable "cache_worker" {
   })
 }
 
+variable "api_db_migration" {
+  description = "Configuration for the API database migration"
+  type = object({
+    image_tag    = string
+    database_url = string
+  })
+}
+
 module "secrets" {
   source = "./secrets"
 }
