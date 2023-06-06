@@ -196,8 +196,8 @@ module "cache_worker" {
   enable_cronjob = var.cache_worker.enable_cronjob
 }
 
-module "db_migration" {
-  source = "./db-migration"
+module "api_db_migration" {
+  source = "./api-db-migration"
 
   namespace         = var.namespace
   image_tag         = var.image_tag

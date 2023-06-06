@@ -1,5 +1,5 @@
 locals {
-  name = "db-migration"
+  name = "api-db-migration"
 }
 
 variable "namespace" {
