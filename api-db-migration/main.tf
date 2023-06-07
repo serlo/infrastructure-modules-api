@@ -42,10 +42,6 @@ resource "kubernetes_service" "migration" {
   }
 }
 
-output "service_name" {
-  value = kubernetes_service.migration.metadata[0].name
-}
-
 resource "kubernetes_job" "migration" {
   metadata {
     name      = local.name
