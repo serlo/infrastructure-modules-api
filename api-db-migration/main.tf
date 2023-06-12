@@ -22,9 +22,8 @@ variable "node_pool" {
   description = "Node pool to use"
 }
 
-variable "environment" {
-  description = "environment"
-  type        = string
+variable "database_url" {
+  type = string
 }
 
 resource "kubernetes_job" "migration" {
@@ -38,12 +37,6 @@ resource "kubernetes_job" "migration" {
   }
 
   spec {
-    selector {
-      match_labels = {
-        app = local.name
-      }
-    }
-
     template {
       metadata {
         labels = {
@@ -62,20 +55,8 @@ resource "kubernetes_job" "migration" {
           image_pull_policy = var.image_pull_policy
 
           env {
-            name  = "ENVIRONMENT"
-            value = var.environment
-          }
-
-          resources {
-            limits = {
-              cpu    = "200m"
-              memory = "100Mi"
-            }
-
-            requests = {
-              cpu    = "100m"
-              memory = "50Mi"
-            }
+            name  = "DATABASE"
+            value = var.database_url
           }
         }
       }

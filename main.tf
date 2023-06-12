@@ -208,11 +208,11 @@ module "api_db_migration" {
   source = "./api-db-migration"
 
   namespace         = var.namespace
-  image_tag         = var.image_tag
+  image_tag         = var.api_db_migration.image_tag
   image_pull_policy = var.image_pull_policy
   node_pool         = var.node_pool
 
-  environment = var.environment
+  database_url = var.api_db_migration.database_url
 }
 
 output "server_service_name" {
