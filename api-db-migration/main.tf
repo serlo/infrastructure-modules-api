@@ -27,21 +27,6 @@ variable "environment" {
   type        = string
 }
 
-resource "kubernetes_service" "migration" {
-  metadata {
-    name      = local.name
-    namespace = var.namespace
-  }
-
-  spec {
-    selector = {
-      app = local.name
-    }
-
-    type = "ClusterIP"
-  }
-}
-
 resource "kubernetes_job" "migration" {
   metadata {
     name      = local.name
