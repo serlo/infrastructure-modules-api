@@ -103,6 +103,14 @@ variable "cache_worker" {
   })
 }
 
+variable "api_db_migration" {
+  description = "Configuration for the API database migration"
+  type = object({
+    image_tag    = string
+    database_url = string
+  })
+}
+
 module "secrets" {
   source = "./secrets"
 }
@@ -194,6 +202,17 @@ module "cache_worker" {
   api_host       = module.server.host
   secret         = module.secrets.serlo_cache_worker
   enable_cronjob = var.cache_worker.enable_cronjob
+}
+
+module "api_db_migration" {
+  source = "./api-db-migration"
+
+  namespace         = var.namespace
+  image_tag         = var.api_db_migration.image_tag
+  image_pull_policy = var.image_pull_policy
+  node_pool         = var.node_pool
+
+  database_url = var.api_db_migration.database_url
 }
 
 output "server_service_name" {
