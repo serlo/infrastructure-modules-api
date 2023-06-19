@@ -89,9 +89,10 @@ variable "database_layer" {
   type = object({
     image_tag = string
 
-    database_url             = string
-    database_max_connections = number
-    sentry_dsn               = string
+    database_url                   = string
+    database_max_connections       = number
+    sentry_dsn                     = string
+    metadata_api_last_changes_date = string
   })
 }
 
@@ -124,10 +125,11 @@ module "database_layer" {
   image_pull_policy = var.image_pull_policy
   node_pool         = var.node_pool
 
-  environment              = var.environment
-  sentry_dsn               = var.database_layer.sentry_dsn
-  serlo_org_database_url   = var.database_layer.database_url
-  database_max_connections = var.database_layer.database_max_connections
+  environment                    = var.environment
+  sentry_dsn                     = var.database_layer.sentry_dsn
+  serlo_org_database_url         = var.database_layer.database_url
+  database_max_connections       = var.database_layer.database_max_connections
+  metadata_api_last_changes_date = var.database_layer.metadata_api_last_changes_date
 }
 
 module "database_layer_swr" {
@@ -139,10 +141,11 @@ module "database_layer_swr" {
   image_pull_policy = var.image_pull_policy
   node_pool         = var.node_pool
 
-  environment              = var.environment
-  sentry_dsn               = var.database_layer.sentry_dsn
-  serlo_org_database_url   = var.database_layer.database_url
-  database_max_connections = var.database_layer.database_max_connections
+  environment                    = var.environment
+  sentry_dsn                     = var.database_layer.sentry_dsn
+  serlo_org_database_url         = var.database_layer.database_url
+  database_max_connections       = var.database_layer.database_max_connections
+  metadata_api_last_changes_date = var.database_layer.metadata_api_last_changes_date
 }
 
 module "server" {

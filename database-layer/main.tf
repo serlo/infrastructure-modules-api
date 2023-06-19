@@ -7,43 +7,39 @@ variable "suffix" {
 }
 
 variable "namespace" {
-  description = "Kubernetes namespace to use"
-  type        = string
+  type = string
 }
 
 variable "image_tag" {
-  description = "Docker image tag to use"
-  type        = string
+  type = string
 }
 
 variable "image_pull_policy" {
-  description = "image pull policy"
-  type        = string
+  type = string
 }
 
 variable "node_pool" {
-  type        = string
-  description = "Node pool to use"
+  type = string
 }
 
 variable "environment" {
-  description = "environment"
-  type        = string
+  type = string
 }
 
 variable "serlo_org_database_url" {
-  description = "Serlo.org Database URL"
-  type        = string
+  type = string
 }
 
 variable "database_max_connections" {
-  description = "Max Database connections"
-  type        = number
+  type = number
 }
 
 variable "sentry_dsn" {
-  description = "Sentry DSN"
-  type        = string
+  type = string
+}
+
+variable "metadata_api_last_changes_date" {
+  type = string
 }
 
 resource "kubernetes_service" "server" {
@@ -151,6 +147,10 @@ resource "kubernetes_deployment" "server" {
             value = var.sentry_dsn
           }
 
+          env {
+            name  = "METADATA_API_LAST_CHANGES_DATE"
+            value = var.metadata_api_last_changes_date
+          }
           resources {
             limits = {
               cpu    = "200m"
