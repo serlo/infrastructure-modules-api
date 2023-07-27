@@ -195,7 +195,7 @@ resource "kubernetes_deployment" "server" {
 
           liveness_probe {
             http_get {
-              path = "/.well-known/apollo/server-health"
+              path = "/health"
               port = 3001
             }
 
