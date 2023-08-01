@@ -32,7 +32,7 @@ variable "enable_cronjob" {
   description = "enables cache worker cronjob"
 }
 
-resource "kubernetes_cron_job" "cache_worker" {
+resource "kubernetes_cron_job_v1" "cache_worker" {
   count = var.enable_cronjob ? 1 : 0
 
   metadata {
