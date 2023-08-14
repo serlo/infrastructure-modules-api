@@ -48,7 +48,6 @@ variable "secrets" {
   type = object({
     serlo_cloudflare_worker = string
     serlo_org               = string
-    serlo_cache_worker      = string
   })
 }
 
@@ -309,11 +308,6 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "SERVER_SWR_QUEUE_DASHBOARD_PASSWORD"
             value = var.swr_queue_dashboard.password
-          }
-
-          env {
-            name  = "SERVER_SERLO_CACHE_WORKER_SECRET"
-            value = var.secrets.serlo_cache_worker
           }
 
           env {
