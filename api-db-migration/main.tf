@@ -62,4 +62,6 @@ resource "kubernetes_job" "migration" {
       }
     }
   }
+
+  wait_for_completion = false
 }
