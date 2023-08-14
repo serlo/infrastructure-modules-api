@@ -37,6 +37,8 @@ resource "kubernetes_job" "migration" {
   }
 
   spec {
+    active_deadline_seconds = 7200
+
     template {
       metadata {
         labels = {
