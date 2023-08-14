@@ -107,8 +107,9 @@ variable "cache_worker" {
 variable "api_db_migration" {
   description = "Configuration for the API database migration"
   type = object({
-    image_tag    = string
-    database_url = string
+    image_tag      = string
+    database_url   = string
+    enable_cronjob = bool
   })
 }
 
@@ -214,6 +215,7 @@ module "api_db_migration" {
   image_tag         = var.api_db_migration.image_tag
   image_pull_policy = var.image_pull_policy
   node_pool         = var.node_pool
+  enable_cronjob    = var.api_db_migration.enable_cronjob
 
   database_url = var.api_db_migration.database_url
 }

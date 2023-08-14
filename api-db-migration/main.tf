@@ -26,6 +26,10 @@ variable "database_url" {
   type = string
 }
 
+variable "enable_cronjob" {
+  type = bool
+}
+
 resource "kubernetes_job" "migration" {
   metadata {
     name      = local.name
@@ -66,4 +70,49 @@ resource "kubernetes_job" "migration" {
   }
 
   wait_for_completion = false
+}
+
+resource "kubernetes_cron_job_v1" "migration_cron_job" {
+  count = var.enable_cronjob ? 1 : 0
+
+  metadata {
+    name      = "db-migration-cronjob"
+    namespace = var.namespace
+
+    labels = {
+      app = local.name
+    }
+  }
+
+  spec {
+    concurrency_policy = "Forbid"
+    schedule           = "0 5 * * *"
+    job_template {
+      metadata {}
+      spec {
+        backoff_limit = 2
+        template {
+          metadata {}
+          spec {
+            node_selector = {
+              "cloud.google.com/gke-nodepool" = var.node_pool
+            }
+
+            container {
+              name  = "db-migration-cronjob"
+              image = "eu.gcr.io/serlo-shared/api-db-migration:${var.image_tag}"
+
+              env {
+                name  = "DATABASE"
+                value = var.database_url
+              }
+
+            }
+
+            restart_policy = "Never"
+          }
+        }
+      }
+    }
+  }
 }
