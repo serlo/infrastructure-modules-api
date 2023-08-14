@@ -96,14 +96,6 @@ variable "database_layer" {
   })
 }
 
-variable "cache_worker" {
-  description = "Configuration for Cache Worker"
-  type = object({
-    image_tag      = string
-    enable_cronjob = bool
-  })
-}
-
 variable "api_db_migration" {
   description = "Configuration for the API database migration"
   type = object({
@@ -193,18 +185,6 @@ module "swr_queue_worker" {
   mailchimp_api                 = var.mailchimp_api
   serlo_org_database_layer_host = module.database_layer_swr.host
   concurrency                   = var.swr_queue_worker.concurrency
-}
-
-module "cache_worker" {
-  source = "./cache-worker"
-
-  namespace = var.namespace
-  image_tag = var.cache_worker.image_tag
-  node_pool = var.node_pool
-
-  api_host       = module.server.host
-  secret         = module.secrets.serlo_cache_worker
-  enable_cronjob = var.cache_worker.enable_cronjob
 }
 
 module "api_db_migration" {
