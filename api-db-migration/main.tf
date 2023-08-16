@@ -30,6 +30,10 @@ variable "enable_cronjob" {
   type = bool
 }
 
+variable "redis_url" {
+  type = string
+}
+
 resource "kubernetes_job" "migration" {
   metadata {
     name      = local.name
@@ -63,6 +67,11 @@ resource "kubernetes_job" "migration" {
           env {
             name  = "DATABASE"
             value = var.database_url
+          }
+
+          env {
+            name  = "REDIS_URL"
+            value = var.redis_url
           }
         }
       }
@@ -107,6 +116,10 @@ resource "kubernetes_cron_job_v1" "migration_cron_job" {
                 value = var.database_url
               }
 
+              env {
+                name  = "REDIS_URL"
+                value = var.redis_url
+              }
             }
 
             restart_policy = "Never"
