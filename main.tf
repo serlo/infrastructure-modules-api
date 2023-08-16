@@ -198,6 +198,7 @@ module "api_db_migration" {
   enable_cronjob    = var.api_db_migration.enable_cronjob
 
   database_url = var.api_db_migration.database_url
+  redis_url    = var.redis_url
 }
 
 output "server_service_name" {
