@@ -117,6 +117,18 @@ variable "notification_email_secret" {
   type = string
 }
 
+variable "enmeshed_server_host" {
+  type = string
+}
+
+variable "enmeshed_server_secret" {
+  type = string
+}
+
+variable "enmeshed_webhook_secret" {
+  type = string
+}
+
 resource "kubernetes_service" "server" {
   metadata {
     name      = local.name
@@ -318,6 +330,21 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "SERVER_SERLO_NOTIFICATION_EMAIL_SERVICE_SECRET"
             value = var.notification_email_secret
+          }
+
+          env {
+            name  = "ENMESHED_SERVER_HOST"
+            value = var.enmeshed_server_host
+          }
+
+          env {
+            name  = "ENMESHED_SERVER_SECRET"
+            value = var.enmeshed_server_secret
+          }
+
+          env {
+            name  = "ENMESHED_WEBHOOK_SECRET"
+            value = var.enmeshed_webhook_secret
           }
 
           volume_mount {

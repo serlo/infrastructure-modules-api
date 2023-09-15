@@ -73,7 +73,10 @@ variable "server" {
       username = string
       password = string
     })
-    sentry_dsn = string
+    sentry_dsn              = string
+    enmeshed_server_host    = string
+    enmeshed_server_secret  = string
+    enmeshed_webhook_secret = string
   })
 }
 
@@ -166,6 +169,9 @@ module "server" {
   serlo_org_database_layer_host = module.database_layer.host
   swr_queue_dashboard           = var.server.swr_queue_dashboard
   notification_email_secret     = var.server.notification_email_secret
+  enmeshed_server_host          = var.server.enmeshed_server_host
+  enmeshed_server_secret        = var.server.enmeshed_server_secret
+  enmeshed_webhook_secret       = var.server.enmeshed_webhook_secret
 }
 
 module "swr_queue_worker" {
