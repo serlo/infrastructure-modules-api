@@ -100,7 +100,7 @@ resource "kubernetes_deployment" "content-generation-service" {
           liveness_probe {
             http_get {
               path = "/health"
-              port = 8080
+              port = 8082
             }
 
             initial_delay_seconds = 5
@@ -143,7 +143,7 @@ resource "kubernetes_horizontal_pod_autoscaler_v2" "content-generation-service" 
   }
 
   spec {
-    max_replicas = 3
+    max_replicas = 1
 
     scale_target_ref {
       api_version = "apps/v1"
