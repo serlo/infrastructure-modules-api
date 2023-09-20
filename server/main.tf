@@ -284,11 +284,6 @@ resource "kubernetes_deployment" "server" {
           }
 
           env {
-            name  = "CONTENT_GENERATION_SERVICE_HOST"
-            value = var.content_generation_service_host
-          }
-
-          env {
             name  = "SERLO_ORG_SECRET"
             value = var.secrets.serlo_org
           }
@@ -354,6 +349,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "ENMESHED_WEBHOOK_SECRET"
             value = var.enmeshed_webhook_secret
+          }
+
+          env {
+            name  = "CONTENT_GENERATION_SERVICE_HOST"
+            value = var.content_generation_service_host
           }
 
           volume_mount {
