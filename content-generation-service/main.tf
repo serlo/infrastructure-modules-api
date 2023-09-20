@@ -115,12 +115,12 @@ resource "kubernetes_deployment" "content-generation-service" {
           resources {
             limits = {
               cpu    = "200m"
-              memory = "100Mi"
+              memory = "200Mi"
             }
 
             requests = {
               cpu    = "100m"
-              memory = "50Mi"
+              memory = "100Mi"
             }
           }
         }
@@ -133,22 +133,5 @@ resource "kubernetes_deployment" "content-generation-service" {
     ignore_changes = [
       spec.0.replicas
     ]
-  }
-}
-
-resource "kubernetes_horizontal_pod_autoscaler_v2" "content-generation-service" {
-  metadata {
-    name      = local.name
-    namespace = var.namespace
-  }
-
-  spec {
-    max_replicas = 1
-
-    scale_target_ref {
-      api_version = "apps/v1"
-      kind        = "Deployment"
-      name        = local.name
-    }
   }
 }
