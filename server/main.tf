@@ -105,6 +105,10 @@ variable "serlo_org_database_layer_host" {
   type = string
 }
 
+variable "content_generation_service_host" {
+  type = string
+}
+
 variable "swr_queue_dashboard" {
   description = "Basic auth credentials for SWR Queue dashboard"
   type = object({
@@ -277,6 +281,11 @@ resource "kubernetes_deployment" "server" {
           env {
             name  = "SERLO_ORG_DATABASE_LAYER_HOST"
             value = var.serlo_org_database_layer_host
+          }
+
+          env {
+            name  = "CONTENT_GENERATION_SERVICE_HOST"
+            value = var.content_generation_service_host
           }
 
           env {
