@@ -40,7 +40,7 @@ variable "metadata_api_last_changes_date" {
 
 resource "kubernetes_service" "server" {
   metadata {
-    name      = "${local.name}"
+    name      = local.name
     namespace = var.namespace
   }
 
@@ -72,7 +72,7 @@ output "host" {
 
 resource "kubernetes_deployment" "server" {
   metadata {
-    name      = "${local.name}"
+    name      = local.name
     namespace = var.namespace
 
     labels = {
@@ -110,7 +110,7 @@ resource "kubernetes_deployment" "server" {
 
         container {
           image             = "eu.gcr.io/serlo-shared/serlo-org-database-layer:${var.image_tag}"
-          name              = "${local.name}"
+          name              = local.name
           image_pull_policy = var.image_pull_policy
 
           liveness_probe {
@@ -173,7 +173,7 @@ resource "kubernetes_deployment" "server" {
 
 resource "kubernetes_horizontal_pod_autoscaler" "server" {
   metadata {
-    name      = "${local.name}"
+    name      = local.name
     namespace = var.namespace
   }
 
@@ -183,7 +183,7 @@ resource "kubernetes_horizontal_pod_autoscaler" "server" {
     scale_target_ref {
       api_version = "apps/v1"
       kind        = "Deployment"
-      name        = "${local.name}"
+      name        = local.name
     }
   }
 }
