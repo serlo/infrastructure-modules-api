@@ -122,7 +122,6 @@ module "secrets" {
 module "database_layer" {
   source = "./database-layer"
 
-  suffix            = ""
   namespace         = var.namespace
   image_tag         = var.database_layer.image_tag
   image_pull_policy = var.image_pull_policy
