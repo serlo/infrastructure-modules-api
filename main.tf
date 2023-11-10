@@ -122,23 +122,6 @@ module "secrets" {
 module "database_layer" {
   source = "./database-layer"
 
-  suffix            = ""
-  namespace         = var.namespace
-  image_tag         = var.database_layer.image_tag
-  image_pull_policy = var.image_pull_policy
-  node_pool         = var.node_pool
-
-  environment                    = var.environment
-  sentry_dsn                     = var.database_layer.sentry_dsn
-  serlo_org_database_url         = var.database_layer.database_url
-  database_max_connections       = var.database_layer.database_max_connections
-  metadata_api_last_changes_date = var.database_layer.metadata_api_last_changes_date
-}
-
-module "database_layer_swr" {
-  source = "./database-layer"
-
-  suffix            = "-swr"
   namespace         = var.namespace
   image_tag         = var.database_layer.image_tag
   image_pull_policy = var.image_pull_policy
@@ -198,7 +181,7 @@ module "swr_queue_worker" {
   google_spreadsheet_api        = var.google_spreadsheet_api
   rocket_chat_api               = var.rocket_chat_api
   mailchimp_api                 = var.mailchimp_api
-  serlo_org_database_layer_host = module.database_layer_swr.host
+  serlo_org_database_layer_host = module.database_layer.host
   concurrency                   = var.swr_queue_worker.concurrency
 }
 
