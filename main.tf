@@ -77,6 +77,7 @@ variable "server" {
     enmeshed_server_host    = string
     enmeshed_server_secret  = string
     enmeshed_webhook_secret = string
+    openai_api_key          = string
   })
 }
 
@@ -142,27 +143,27 @@ module "server" {
   image_pull_policy = var.image_pull_policy
   node_pool         = var.node_pool
 
-  environment                     = var.environment
-  log_level                       = var.log_level
-  redis_url                       = var.redis_url
-  secrets                         = module.secrets
-  sentry_dsn                      = var.server.sentry_dsn
-  google_service_account          = var.server.google_service_account
-  google_spreadsheet_api          = var.google_spreadsheet_api
-  rocket_chat_api                 = var.rocket_chat_api
-  mailchimp_api                   = var.mailchimp_api
-  hydra_host                      = var.server.hydra_host
-  kratos_public_host              = var.server.kratos_public_host
-  kratos_admin_host               = var.server.kratos_admin_host
-  kratos_secret                   = var.server.kratos_secret
-  kratos_db_uri                   = var.server.kratos_db_uri
-  serlo_org_database_layer_host   = module.database_layer.host
-  content_generation_service_host = module.content_generation_service.host
-  swr_queue_dashboard             = var.server.swr_queue_dashboard
-  notification_email_secret       = var.server.notification_email_secret
-  enmeshed_server_host            = var.server.enmeshed_server_host
-  enmeshed_server_secret          = var.server.enmeshed_server_secret
-  enmeshed_webhook_secret         = var.server.enmeshed_webhook_secret
+  environment                   = var.environment
+  log_level                     = var.log_level
+  redis_url                     = var.redis_url
+  secrets                       = module.secrets
+  sentry_dsn                    = var.server.sentry_dsn
+  google_service_account        = var.server.google_service_account
+  google_spreadsheet_api        = var.google_spreadsheet_api
+  rocket_chat_api               = var.rocket_chat_api
+  mailchimp_api                 = var.mailchimp_api
+  hydra_host                    = var.server.hydra_host
+  kratos_public_host            = var.server.kratos_public_host
+  kratos_admin_host             = var.server.kratos_admin_host
+  kratos_secret                 = var.server.kratos_secret
+  kratos_db_uri                 = var.server.kratos_db_uri
+  serlo_org_database_layer_host = module.database_layer.host
+  openai_api_key                = var.server.openai_api_key
+  swr_queue_dashboard           = var.server.swr_queue_dashboard
+  notification_email_secret     = var.server.notification_email_secret
+  enmeshed_server_host          = var.server.enmeshed_server_host
+  enmeshed_server_secret        = var.server.enmeshed_server_secret
+  enmeshed_webhook_secret       = var.server.enmeshed_webhook_secret
 }
 
 module "swr_queue_worker" {

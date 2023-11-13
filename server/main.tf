@@ -105,7 +105,7 @@ variable "serlo_org_database_layer_host" {
   type = string
 }
 
-variable "content_generation_service_host" {
+variable "openai_api_key" {
   type = string
 }
 
@@ -352,8 +352,8 @@ resource "kubernetes_deployment" "server" {
           }
 
           env {
-            name  = "CONTENT_GENERATION_SERVICE_HOST"
-            value = var.content_generation_service_host
+            name  = "OPENAI_API_KEY"
+            value = var.openai_api_key
           }
 
           volume_mount {
