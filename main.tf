@@ -199,15 +199,6 @@ module "api_db_migration" {
   redis_url    = var.redis_url
 }
 
-module "content_generation_service" {
-  source            = "./content-generation-service"
-  namespace         = var.namespace
-  image_tag         = var.content_generation_service.image_tag
-  image_pull_policy = var.image_pull_policy
-  node_pool         = var.node_pool
-  openai_api_key    = var.content_generation_service.openai_api_key
-}
-
 output "server_service_name" {
   value = module.server.service_name
 }
