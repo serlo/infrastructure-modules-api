@@ -109,13 +109,6 @@ variable "api_db_migration" {
   })
 }
 
-variable "content_generation_service" {
-  type = object({
-    image_tag      = string
-    openai_api_key = string
-  })
-}
-
 module "secrets" {
   source = "./secrets"
 }
